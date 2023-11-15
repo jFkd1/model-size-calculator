@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Storage Size Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        label, select, input, button {
+            margin: 10px 0;
+            display: block;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Model Storage Size Calculator</h1>
+    <label for="parameters">Parameters (in billions):</label>
+    <input type="number" id="parameters" name="parameters" min="0">
+    <label for="weightType">Weight Type:</label>
+    <select id="weightType" name="weightType">
+        <option value="bfloat16">bfloat16</option>
+        <option value="4">4 bits</option>
+        <option value="8">8 bits</option>
+        <option value="16">16 bits</option>
+        <option value="32">32 bits</option>
+        <!-- Add more options as needed -->
+    </select>
+    <button onclick="calculateSize()">Calculate</button>
+    <p id="result"></p>
+
+    <script>
+        function calculateSize() {
+            var parameters = document.getElementById("parameters").value;
+            var weightType = document.getElementById("weightType").value;
+
+            var bitWeight = weightType === 'bfloat16' ? 16 : parseInt(weightType);
+            var totalBits = parameters * 1e9 * bitWeight;
+            var totalBytes = totalBits / 8;
+            var totalGB = totalBytes / (1024 * 1024 * 1024);
+
+            document.getElementById("result").innerText = `Storage Size: ${totalGB.toFixed(2)} GB`;
+        }
+    </script>
+</body>
+</html>
